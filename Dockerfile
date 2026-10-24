@@ -20,12 +20,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=5001
 
-# Install uv for ultra-fast, robust parallel downloads with automatic retries
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+# Install system curl for health checks
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies using uv
+# Install Python dependencies with extended timeout
 COPY requirements.txt .
-RUN uv pip install --system --no-cache -r requirements.txt
+RUN pip install --no-cache-dir --default-timeout=300 -r requirements.txt
 
 # Copy Flask backend code and machine learning model assets
 COPY app.py .
