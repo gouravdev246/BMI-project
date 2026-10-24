@@ -74,6 +74,16 @@ const INITIAL_FORM = {
   ldl: 120
 };
 
+// Dynamic API Base URL: Uses http://127.0.0.1:5001 in local Vite dev on 5173, and relative '' in production/Docker on Render
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL !== undefined
+    ? import.meta.env.VITE_API_BASE_URL
+    : typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+      window.location.port === '5173'
+    ? 'http://127.0.0.1:5001'
+    : '';
+
 export default function App() {
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
@@ -105,12 +115,12 @@ export default function App() {
     return Number(Math.max(0, val).toFixed(2));
   }, [formData.height, formData.waist]);
 
-  // Periodic health check against Flask Backend
+  // Periodic health check against Backend API
   useEffect(() => {
     let isMounted = true;
     const checkBackend = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5001/health', {
+        const res = await fetch(`${API_BASE_URL}/health`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -132,6 +142,22 @@ export default function App() {
       isMounted = false;
       clearInterval(interval);
     };
+  }, []);
+
+  // Automated 10-Minute Keep-Alive Heartbeat to prevent Render free instance sleep
+  useEffect(() => {
+    const keepAliveTimer = setInterval(async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/ping`);
+        if (res.ok) {
+          console.log('[Keep-Alive] 10-minute automated client heartbeat sent successfully.');
+        }
+      } catch (e) {
+        console.warn('[Keep-Alive] Heartbeat check:', e);
+      }
+    }, 600000); // 10 minutes (600,000 ms)
+
+    return () => clearInterval(keepAliveTimer);
   }, []);
 
   const handleInputChange = (field, value) => {
@@ -196,7 +222,7 @@ export default function App() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:5001/predict', {
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
