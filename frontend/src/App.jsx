@@ -1,11 +1,30 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
+import WelcomePage from './components/WelcomePage';
 import {
   RiskPieChart,
   BiomarkerBarChart,
   FeatureImportanceChart,
   SessionTrendChart
 } from './components/Charts';
+import {
+  Activity,
+  HeartPulse,
+  Brain,
+  BarChart3,
+  Stethoscope,
+  Sparkles,
+  ShieldCheck,
+  AlertTriangle,
+  RotateCcw,
+  CheckCircle2,
+  BookOpen,
+  HelpCircle,
+  TrendingUp,
+  FlaskConical,
+  Layers,
+  ArrowRight
+} from 'lucide-react';
 
 // Preset demonstration profiles for presentation and evaluation
 const PRESET_PROFILES = [
@@ -86,7 +105,7 @@ const API_BASE_URL =
     ? import.meta.env.VITE_API_BASE_URL
     : typeof window !== 'undefined' &&
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      window.location.port === '5173'
+      window.location.port !== '5001'
     ? 'http://127.0.0.1:5001'
     : '';
 
@@ -97,7 +116,7 @@ export default function App() {
   const [backendStatus, setBackendStatus] = useState('checking'); // 'online' | 'offline' | 'checking'
   const [errorMessage, setErrorMessage] = useState('');
   const [history, setHistory] = useState([]);
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'methodology' | 'leakage'
+  const [activeTab, setActiveTab] = useState('welcome'); // 'welcome' | 'dashboard' | 'analytics' | 'methodology' | 'leakage'
 
   // Calculate BMI: weight (kg) / (height (m))^2
   const bmi = useMemo(() => {
@@ -327,15 +346,19 @@ export default function App() {
     <div className="dashboard-container">
       {/* Top Header */}
       <header className="main-header">
-        <div className="header-brand">
+        <div
+          className="header-brand"
+          onClick={() => setActiveTab('welcome')}
+          style={{ cursor: 'pointer' }}
+          title="Return to Welcome Overview"
+        >
           <div className="brand-icon">
-            <span className="pulse-dot"></span>
-            🔬
+            <HeartPulse className="brand-logo-svg text-primary-light" />
           </div>
           <div>
-            <h1 className="project-title">BMI & Health Indicator Analysis</h1>
+            <h1 className="project-title">Metabolic Risk Intelligence</h1>
             <p className="project-tagline">
-              B.Tech PBL Research Dashboard • XGBoost Metabolic Risk Analysis (NHANES 2021–2023)
+              B.Tech PBL Research Platform • NHANES 2021–2023 Cohort • XGBoost Classifier
             </p>
           </div>
         </div>
@@ -343,28 +366,39 @@ export default function App() {
         <div className="header-actions">
           <nav className="tab-nav">
             <button
+              className={`tab-btn ${activeTab === 'welcome' ? 'active' : ''}`}
+              onClick={() => setActiveTab('welcome')}
+            >
+              <Sparkles className="tab-icon" />
+              <span>Overview</span>
+            </button>
+            <button
               className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
             >
-              📊 Predictor
+              <Stethoscope className="tab-icon" />
+              <span>Clinical Predictor</span>
             </button>
             <button
               className={`tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}
               onClick={() => setActiveTab('analytics')}
             >
-              📈 Visual Analytics
+              <BarChart3 className="tab-icon" />
+              <span>Visual Analytics</span>
             </button>
             <button
               className={`tab-btn ${activeTab === 'methodology' ? 'active' : ''}`}
               onClick={() => setActiveTab('methodology')}
             >
-              📑 Model & Metrics
+              <Brain className="tab-icon" />
+              <span>Model & Metrics</span>
             </button>
             {/* <button
               className={`tab-btn ${activeTab === 'leakage' ? 'active' : ''}`}
               onClick={() => setActiveTab('leakage')}
             >
-              ⚠️ Research Limitations
+              <AlertTriangle className="tab-icon" />
+              <span>Limitations</span>
             </button> */}
           </nav>
         </div>
@@ -372,6 +406,15 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="content-layout">
+        {/* Tab 0: Welcome / Landing Page */}
+        {activeTab === 'welcome' && (
+          <WelcomePage
+            onNavigate={setActiveTab}
+            onSelectPreset={(data) => setFormData(data)}
+            presets={PRESET_PROFILES}
+          />
+        )}
+
         {activeTab === 'dashboard' && (
           <div className="dashboard-grid">
             {/* Left Column: Form & Presets */}
@@ -647,26 +690,31 @@ export default function App() {
                 <div className="form-actions">
                   <button
                     type="submit"
-                    className="submit-btn"
+                    className="shadcn-btn shadcn-btn-primary shadcn-btn-lg submit-btn"
                     disabled={loading || backendStatus === 'offline'}
                   >
                     {loading ? (
                       <>
                         <span className="spinner"></span>
-                        Evaluating Model...
+                        <span>Evaluating Model...</span>
                       </>
                     ) : (
-                      '⚡ Generate ML Research Prediction'
+                      <>
+                        <Stethoscope className="icon-sm" />
+                        <span>Generate ML Research Prediction</span>
+                        <ArrowRight className="icon-sm" />
+                      </>
                     )}
                   </button>
 
                   <button
                     type="button"
-                    className="reset-btn"
+                    className="shadcn-btn shadcn-btn-outline reset-btn"
                     onClick={handleReset}
                     disabled={loading}
                   >
-                    🔄 Reset Form
+                    <RotateCcw className="icon-sm" />
+                    <span>Reset Form</span>
                   </button>
                 </div>
               </form>
@@ -752,9 +800,9 @@ export default function App() {
                 <div className="empty-state-card">
                   <div className="empty-icon">📊</div>
                   <h3>Ready for Health Indicator Analysis</h3>
-                  <p>
+                  {/* <p>
                     Fill in the patient health indicators on the left, or click a <strong>Quick Demonstration Profile</strong> above to test the XGBoost classification model.
-                  </p>
+                  </p> */}
                   <div className="empty-checklist">
                     <div>✓ 11 input parameters automatically structured</div>
                     <div>✓ Real-time BMI & Body Roundness Index (BRI) computation</div>
@@ -976,10 +1024,10 @@ export default function App() {
 
       {/* Persistent Academic Disclaimer Footer */}
       <footer className="main-footer">
-        <p>
+        {/* <p>
           <strong>Academic Research Prototype:</strong> PBL Project developed for educational and research demonstration purposes. 
           Not intended for medical diagnosis, treatment, or clinical patient management. Always consult a qualified medical professional for health concerns.
-        </p>
+        </p> */}
       </footer>
     </div>
   );
