@@ -360,12 +360,12 @@ export default function App() {
             >
               📑 Model & Metrics
             </button>
-            <button
+            {/* <button
               className={`tab-btn ${activeTab === 'leakage' ? 'active' : ''}`}
               onClick={() => setActiveTab('leakage')}
             >
               ⚠️ Research Limitations
-            </button>
+            </button> */}
           </nav>
         </div>
       </header>
