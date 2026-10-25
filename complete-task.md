@@ -25,3 +25,15 @@
 - Implemented: Created multi-stage `Dockerfile` and `render.yaml` bundling React frontend compilation with Python 3.11 Gunicorn runtime. Added automated 10-minute keep-alive daemon thread in `app.py` and 10-minute client heartbeat in `App.jsx` to prevent Render free instances from going to sleep.
 - Used: Docker, Gunicorn, Python threading/urllib, React `useEffect`.
 - Verification: Verified `/ping` and `/health` routes, tested local Vite build, generated `.dockerignore` and multi-stage container specification.
+
+## 5. Visual Data Analytics, Charts & Header Cleanup
+- Implemented: Added interactive SVG data visualizations and charts in `frontend/src/components/Charts.jsx`:
+  - `RiskPieChart`: Diagnostic criteria breakdown donut/pie chart with met/unmet indicator counting, interactive slice hovering, and toggle to view the CDC NHANES 2021–2023 baseline cohort prevalence (34.2% Metabolic vs 65.8% Normal).
+  - `BiomarkerBarChart`: Comparative biomarker bar graph displaying patient lab values against international clinical thresholds with risk pins and status badges.
+  - `FeatureImportanceChart`: XGBoost tree Gini importance ranking across the 11 clinical features (BRI at 28%, Fasting Glucose at 19%, Triglycerides at 16%, etc.).
+  - `SessionTrendChart`: Session trajectory timeline visualizing prediction probability trends across multiple test queries.
+  - Added dedicated `📈 Visual Analytics` navigation tab in `App.jsx` and embedded charts in the predictor results view.
+  - Cleaned up the header navigation by removing the status pill badge.
+- Used: SVG, React 19, Vanilla CSS (zero external charting dependencies, responsive glassmorphism theme).
+- Verification: Production build verified with `npm run build` (built in 511ms). End-to-end browser verification completed with browser subagent recording screenshots and video showing seamless chart rendering and prediction interactions.
+

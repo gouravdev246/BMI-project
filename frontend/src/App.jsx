@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
+import {
+  RiskPieChart,
+  BiomarkerBarChart,
+  FeatureImportanceChart,
+  SessionTrendChart
+} from './components/Charts';
 
 // Preset demonstration profiles for presentation and evaluation
 const PRESET_PROFILES = [
@@ -280,6 +286,43 @@ export default function App() {
   const bmiCategory = getBmiCategory(bmi);
   const bpCategory = getBpCategory(formData.systolic_bp, formData.diastolic_bp);
 
+  // 5 Clinical Criteria for Metabolic Syndrome Diagnosis
+  const criteriaList = useMemo(() => {
+    const isMale = Number(formData.sex) === 1;
+    return [
+      {
+        name: 'Abdominal Adiposity (Waist)',
+        value: `${formData.waist} cm`,
+        threshold: isMale ? '≥ 102 cm (Male)' : '≥ 88 cm (Female)',
+        met: isMale ? Number(formData.waist) >= 102 : Number(formData.waist) >= 88
+      },
+      {
+        name: 'Elevated Triglycerides',
+        value: `${formData.triglycerides} mg/dL`,
+        threshold: '≥ 150 mg/dL',
+        met: Number(formData.triglycerides) >= 150
+      },
+      {
+        name: 'Reduced HDL Cholesterol',
+        value: `${formData.hdl} mg/dL`,
+        threshold: isMale ? '< 40 mg/dL (Male)' : '< 50 mg/dL (Female)',
+        met: isMale ? Number(formData.hdl) < 40 : Number(formData.hdl) < 50
+      },
+      {
+        name: 'Elevated Blood Pressure',
+        value: `${formData.systolic_bp}/${formData.diastolic_bp} mmHg`,
+        threshold: '≥ 130 / 85 mmHg',
+        met: Number(formData.systolic_bp) >= 130 || Number(formData.diastolic_bp) >= 85
+      },
+      {
+        name: 'Elevated Fasting Glucose',
+        value: `${formData.glucose} mg/dL`,
+        threshold: '≥ 100 mg/dL',
+        met: Number(formData.glucose) >= 100
+      }
+    ];
+  }, [formData]);
+
   return (
     <div className="dashboard-container">
       {/* Top Header */}
@@ -298,21 +341,18 @@ export default function App() {
         </div>
 
         <div className="header-actions">
-          <div className={`status-pill ${backendStatus}`}>
-            <span className="status-indicator"></span>
-            <span className="status-text">
-              {backendStatus === 'online' && 'Flask API Connected'}
-              {backendStatus === 'offline' && 'Backend Disconnected (Port 5001)'}
-              {backendStatus === 'checking' && 'Checking API...'}
-            </span>
-          </div>
-
           <nav className="tab-nav">
             <button
               className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
             >
               📊 Predictor
+            </button>
+            <button
+              className={`tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}
+              onClick={() => setActiveTab('analytics')}
+            >
+              📈 Visual Analytics
             </button>
             <button
               className={`tab-btn ${activeTab === 'methodology' ? 'active' : ''}`}
@@ -635,71 +675,79 @@ export default function App() {
             {/* Right Column: Prediction Output & History */}
             <div className="results-column">
               {predictionResult ? (
-                <div className={`result-card ${predictionResult.prediction === 1 ? 'risk-high' : 'risk-low'}`}>
-                  <div className="result-header">
-                    <span className="result-tag">RESEARCH MODEL OUTPUT</span>
-                    <span className="timestamp-tag">Analyzed Just Now</span>
+                <>
+                  <div className={`result-card ${predictionResult.prediction === 1 ? 'risk-high' : 'risk-low'}`}>
+                    <div className="result-header">
+                      <span className="result-tag">RESEARCH MODEL OUTPUT</span>
+                      <span className="timestamp-tag">Analyzed Just Now</span>
+                    </div>
+
+                    <div className="prediction-main">
+                      <div className="prediction-badge-large">
+                        {predictionResult.prediction === 1 ? '⚠️' : '✅'}
+                      </div>
+                      <div>
+                        <h2 className="prediction-label">
+                          {predictionResult.result}
+                        </h2>
+                        <p className="prediction-sub">
+                          Operational Target Prediction (Class {predictionResult.prediction})
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Probability Meter */}
+                    <div className="probability-container">
+                      <div className="prob-meta">
+                        <span>Model Confidence Probability</span>
+                        <span className="prob-val">{(predictionResult.probability * 100).toFixed(1)}%</span>
+                      </div>
+                      <div className="prob-track">
+                        <div
+                          className={`prob-fill ${predictionResult.prediction === 1 ? 'fill-high' : 'fill-low'}`}
+                          style={{ width: `${Math.max(5, predictionResult.probability * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    {/* Clinical Criteria Breakdown for Metabolic Syndrome */}
+                    <div className="criteria-breakdown">
+                      <h4>Clinical Marker Evaluation:</h4>
+                      <ul className="criteria-list">
+                        <li className={formData.waist >= (formData.sex === 1 ? 102 : 88) ? 'met' : 'unmet'}>
+                          <span>Abdominal Adiposity (Waist &ge; {formData.sex === 1 ? '102cm' : '88cm'}):</span>
+                          <strong>{formData.waist} cm</strong>
+                        </li>
+                        <li className={formData.triglycerides >= 150 ? 'met' : 'unmet'}>
+                          <span>Elevated Triglycerides (&ge; 150 mg/dL):</span>
+                          <strong>{formData.triglycerides} mg/dL</strong>
+                        </li>
+                        <li className={formData.hdl < (formData.sex === 1 ? 40 : 50) ? 'met' : 'unmet'}>
+                          <span>Reduced HDL (&lt; {formData.sex === 1 ? '40' : '50'} mg/dL):</span>
+                          <strong>{formData.hdl} mg/dL</strong>
+                        </li>
+                        <li className={formData.systolic_bp >= 130 || formData.diastolic_bp >= 85 ? 'met' : 'unmet'}>
+                          <span>Elevated Blood Pressure (&ge; 130/85):</span>
+                          <strong>{formData.systolic_bp}/{formData.diastolic_bp} mmHg</strong>
+                        </li>
+                        <li className={formData.glucose >= 100 ? 'met' : 'unmet'}>
+                          <span>Elevated Fasting Glucose (&ge; 100 mg/dL):</span>
+                          <strong>{formData.glucose} mg/dL</strong>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="disclaimer-callout">
+                      ℹ️ <strong>Educational Note:</strong> This output reflects statistical pattern matching from the NHANES operational research definition and should not be used as clinical diagnostic advice.
+                    </div>
                   </div>
 
-                  <div className="prediction-main">
-                    <div className="prediction-badge-large">
-                      {predictionResult.prediction === 1 ? '⚠️' : '✅'}
-                    </div>
-                    <div>
-                      <h2 className="prediction-label">
-                        {predictionResult.result}
-                      </h2>
-                      <p className="prediction-sub">
-                        Operational Target Prediction (Class {predictionResult.prediction})
-                      </p>
-                    </div>
-                  </div>
+                  {/* Diagnostic Criteria Pie/Donut Chart */}
+                  <RiskPieChart formData={formData} criteriaList={criteriaList} />
 
-                  {/* Probability Meter */}
-                  <div className="probability-container">
-                    <div className="prob-meta">
-                      <span>Model Confidence Probability</span>
-                      <span className="prob-val">{(predictionResult.probability * 100).toFixed(1)}%</span>
-                    </div>
-                    <div className="prob-track">
-                      <div
-                        className={`prob-fill ${predictionResult.prediction === 1 ? 'fill-high' : 'fill-low'}`}
-                        style={{ width: `${Math.max(5, predictionResult.probability * 100)}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {/* Clinical Criteria Breakdown for Metabolic Syndrome */}
-                  <div className="criteria-breakdown">
-                    <h4>Clinical Marker Evaluation:</h4>
-                    <ul className="criteria-list">
-                      <li className={formData.waist >= (formData.sex === 1 ? 102 : 88) ? 'met' : 'unmet'}>
-                        <span>Abdominal Adiposity (Waist &ge; {formData.sex === 1 ? '102cm' : '88cm'}):</span>
-                        <strong>{formData.waist} cm</strong>
-                      </li>
-                      <li className={formData.triglycerides >= 150 ? 'met' : 'unmet'}>
-                        <span>Elevated Triglycerides (&ge; 150 mg/dL):</span>
-                        <strong>{formData.triglycerides} mg/dL</strong>
-                      </li>
-                      <li className={formData.hdl < (formData.sex === 1 ? 40 : 50) ? 'met' : 'unmet'}>
-                        <span>Reduced HDL (&lt; {formData.sex === 1 ? '40' : '50'} mg/dL):</span>
-                        <strong>{formData.hdl} mg/dL</strong>
-                      </li>
-                      <li className={formData.systolic_bp >= 130 || formData.diastolic_bp >= 85 ? 'met' : 'unmet'}>
-                        <span>Elevated Blood Pressure (&ge; 130/85):</span>
-                        <strong>{formData.systolic_bp}/{formData.diastolic_bp} mmHg</strong>
-                      </li>
-                      <li className={formData.glucose >= 100 ? 'met' : 'unmet'}>
-                        <span>Elevated Fasting Glucose (&ge; 100 mg/dL):</span>
-                        <strong>{formData.glucose} mg/dL</strong>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="disclaimer-callout">
-                    ℹ️ <strong>Educational Note:</strong> This output reflects statistical pattern matching from the NHANES operational research definition and should not be used as clinical diagnostic advice.
-                  </div>
-                </div>
+                  {/* Biomarkers Comparison Bar Chart */}
+                  <BiomarkerBarChart formData={formData} />
+                </>
               ) : (
                 <div className="empty-state-card">
                   <div className="empty-icon">📊</div>
@@ -769,6 +817,39 @@ export default function App() {
                     <span className="spec-val">Native JSON Model</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab: Visual Analytics & Interactive Charts */}
+        {activeTab === 'analytics' && (
+          <div className="tab-pane analytics-pane">
+            <div className="doc-section">
+              <div className="analytics-header-banner">
+                <div>
+                  <h2>Visual Health Data & Predictive Analytics</h2>
+                  <p>
+                    Interactive visual analytics highlighting active clinical markers, diagnostic metabolic syndrome criteria breakdown, cohort comparison, and XGBoost feature importance rankings.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="tab-switch-cta-btn"
+                  onClick={() => setActiveTab('dashboard')}
+                >
+                  ← Edit Health Indicators in Predictor
+                </button>
+              </div>
+
+              <div className="analytics-grid">
+                <RiskPieChart formData={formData} criteriaList={criteriaList} />
+                <BiomarkerBarChart formData={formData} />
+              </div>
+
+              <div className="analytics-grid" style={{ marginTop: '2rem' }}>
+                <FeatureImportanceChart />
+                <SessionTrendChart history={history} />
               </div>
             </div>
           </div>
