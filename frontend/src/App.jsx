@@ -357,9 +357,9 @@ export default function App() {
           </div>
           <div>
             <h1 className="project-title">Metabolic Risk Intelligence</h1>
-            <p className="project-tagline">
+            {/* <p className="project-tagline">
               B.Tech PBL Research Platform • NHANES 2021–2023 Cohort • XGBoost Classifier
-            </p>
+            </p> */}
           </div>
         </div>
 
@@ -785,9 +785,9 @@ export default function App() {
                       </ul>
                     </div>
 
-                    <div className="disclaimer-callout">
+                    {/* <div className="disclaimer-callout">
                       ℹ️ <strong>Educational Note:</strong> This output reflects statistical pattern matching from the NHANES operational research definition and should not be used as clinical diagnostic advice.
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Diagnostic Criteria Pie/Donut Chart */}

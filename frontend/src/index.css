@@ -2,57 +2,75 @@
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Modern Theme Tokens (shadcn & Material UI inspired) */
-  --bg-primary: #070a12;
-  --bg-secondary: #0c111d;
-  --bg-tertiary: #161e2e;
-  --card-bg: rgba(15, 23, 42, 0.78);
-  --card-hover: rgba(24, 34, 58, 0.88);
-  --card-border: rgba(148, 163, 184, 0.14);
-  --card-border-glow: rgba(59, 130, 246, 0.35);
+  /* ==========================================================================
+     Color Palette: Light Brown, Warm Beige, Pure Black Text & Forest Green Buttons
+     ========================================================================== */
+  /* Surfaces & Paper Backgrounds */
+  --bg-primary: #faf7f2;
+  --bg-secondary: #f4ede2;
+  --bg-tertiary: #ebe1d0;
+  --bg-sand: #e4d8c5;
+  --card-bg: rgba(253, 251, 247, 0.96);
+  --card-hover: #ffffff;
+  --card-border: rgba(180, 155, 125, 0.28);
+  --card-border-glow: rgba(22, 101, 52, 0.3);
+  --card-inner-well: #f5eee3;
 
-  /* Primary Brand - Vibrant Indigo/Clinical Blue */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --primary-light: #60a5fa;
-  --primary-glow: rgba(59, 130, 246, 0.28);
-  --cyan: #06b6d4;
-  --cyan-light: #22d3ee;
-  --teal: #14b8a6;
-  --purple: #a855f7;
+  /* Buttons & Action Accents - Forest Green */
+  --primary: #15803d;
+  --primary-hover: #166534;
+  --primary-dark: #14532d;
+  --primary-light: #22c55e;
+  --primary-glow: rgba(22, 101, 52, 0.24);
+  --primary-soft: #e8f5ec;
+  --primary-border: rgba(21, 128, 61, 0.35);
 
-  /* Alert / Medical Clinical Tones */
-  --safe-green: #10b981;
-  --safe-bg: rgba(16, 185, 129, 0.12);
-  --safe-border: rgba(16, 185, 129, 0.32);
+  /* Light Brown & Earthy Accents */
+  --brown-main: #8c6d48;
+  --brown-deep: #694f31;
+  --brown-light: #a98963;
+  --brown-soft: #f2e9dc;
+  --brown-border: rgba(140, 109, 72, 0.25);
 
-  --warn-amber: #f59e0b;
-  --warn-bg: rgba(245, 158, 11, 0.12);
-  --warn-border: rgba(245, 158, 11, 0.32);
+  /* Warm Muted Medical Tones */
+  --safe-green: #15803d;
+  --safe-bg: #eaf6ee;
+  --safe-border: rgba(21, 128, 61, 0.35);
 
-  --danger-rose: #f43f5e;
-  --danger-bg: rgba(244, 63, 94, 0.14);
-  --danger-border: rgba(244, 63, 94, 0.35);
+  --warn-amber: #b45309;
+  --warn-bg: #fef3c7;
+  --warn-border: rgba(180, 83, 9, 0.35);
 
-  /* Typography Colors */
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  --text-inverse: #070a12;
+  --danger-rose: #be123c;
+  --danger-bg: #ffe4e6;
+  --danger-border: rgba(190, 18, 60, 0.35);
 
-  /* Geometry & Elevation */
+  --info-cyan: #0e7490;
+  --info-bg: #ecfeff;
+  --info-border: rgba(14, 116, 144, 0.3);
+
+  /* Typography Colors - Black & Deep Charcoal */
+  --text-main: #121210;
+  --text-heading: #171513;
+  --text-body: #262320;
+  --text-muted: #575047;
+  --text-dim: #786f64;
+  --text-inverse: #ffffff;
+
+  /* Papermorphism Geometry & Elevation */
   --radius-xs: 6px;
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  --radius-md: 13px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.18);
+  /* Slow Paper Morphism Shadow Stacks (Layered Sheet Depth) */
+  --shadow-paper-xs: 0 1px 2px rgba(80, 60, 40, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-paper-sm: 0 2px 8px -2px rgba(80, 60, 40, 0.06), 0 1px 3px rgba(80, 60, 40, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-paper-md: 0 10px 26px -4px rgba(80, 60, 40, 0.08), 0 3px 8px -1px rgba(80, 60, 40, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-paper-lg: 0 18px 38px -6px rgba(80, 60, 40, 0.12), 0 6px 14px -2px rgba(80, 60, 40, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-paper-float: 0 22px 48px -8px rgba(80, 60, 40, 0.16), 0 8px 18px -3px rgba(80, 60, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 * {
@@ -66,17 +84,17 @@ html, body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: 
-    radial-gradient(circle at 20% 10%, rgba(59, 130, 246, 0.09) 0%, transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.07) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.04) 0%, transparent 60%),
-    linear-gradient(180deg, #070a12 0%, #090e1a 50%, #0a1122 100%);
+    radial-gradient(circle at 12% 10%, rgba(244, 237, 226, 0.85) 0%, transparent 45%),
+    radial-gradient(circle at 88% 85%, rgba(235, 225, 208, 0.7) 0%, transparent 50%),
+    radial-gradient(circle at 50% 40%, rgba(255, 252, 248, 0.5) 0%, transparent 60%),
+    linear-gradient(180deg, #fbf8f3 0%, #f5efe5 50%, #ede3d2 100%);
   background-attachment: fixed;
 }
 
@@ -84,7 +102,9 @@ button, input, select, textarea {
   font-family: inherit;
 }
 
-/* Utilities for modern component icons and badges */
+/* ==========================================================================
+   Utility Icons & Color Classes
+   ========================================================================== */
 .icon-sm {
   width: 16px;
   height: 16px;
@@ -103,51 +123,58 @@ button, input, select, textarea {
   flex-shrink: 0;
 }
 
-.text-primary-light { color: var(--primary-light); }
-.text-cyan { color: var(--cyan); }
+.text-primary-light { color: var(--primary); }
+.text-cyan { color: var(--info-cyan); }
 .text-rose { color: var(--danger-rose); }
 .text-safe { color: var(--safe-green); }
 .text-amber { color: var(--warn-amber); }
-.text-purple { color: var(--purple); }
+.text-purple { color: #7e22ce; }
+.text-brown { color: var(--brown-deep); }
 .text-muted { color: var(--text-muted); }
 
 .bg-primary-soft {
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
 }
 
 .bg-cyan-soft {
-  background: rgba(6, 182, 212, 0.12);
-  border: 1px solid rgba(6, 182, 212, 0.25);
+  background: var(--info-bg);
+  border: 1px solid var(--info-border);
 }
 
 .bg-rose-soft {
-  background: rgba(244, 63, 94, 0.12);
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
 }
 
 .bg-green-soft, .bg-emerald-soft {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: var(--safe-bg);
+  border: 1px solid var(--safe-border);
 }
 
 .bg-purple-soft {
-  background: rgba(168, 85, 247, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: #f3e8ff;
+  border: 1px solid rgba(147, 51, 234, 0.25);
 }
 
-/* Scrollbar Styling */
+.bg-brown-soft {
+  background: var(--brown-soft);
+  border: 1px solid var(--brown-border);
+}
+
+/* Scrollbar in Paper Theme */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
+  background: #d4c5b0;
   border-radius: var(--radius-full);
+  border: 2px solid var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--brown-main);
 }

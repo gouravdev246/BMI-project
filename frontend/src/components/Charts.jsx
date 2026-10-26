@@ -143,15 +143,15 @@ export function RiskPieChart({ formData, criteriaList = [] }) {
                   key={slice.id}
                   d={path}
                   fill={slice.color}
-                  stroke="#0a0f1d"
+                  stroke="#ffffff"
                   strokeWidth="2.5"
                   className="donut-slice"
                   onMouseEnter={() => setHoveredSlice(slice.id)}
                   onMouseLeave={() => setHoveredSlice(null)}
                   style={{
-                    opacity: isHovered ? 1 : 0.9,
+                    opacity: isHovered ? 1 : 0.92,
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.25s ease'
                   }}
                 />
               );

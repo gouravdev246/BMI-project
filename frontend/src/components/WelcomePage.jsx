@@ -23,21 +23,21 @@ export default function WelcomePage({ onNavigate, onSelectPreset, presets = [] }
     <div className="welcome-container">
       {/* 1. Hero Section */}
       <section className="welcome-hero">
-        {/* <div className="welcome-hero-badge">
-          <Sparkles className="icon-sm text-cyan" />
+        {/* <div className="welcome-hero-badge fade-in-up stagger-1">
+          <Sparkles className="icon-sm text-safe" />
           <span>CDC NHANES 2021–2023 Research Cohort • XGBoost Clinical Ensemble</span>
         </div> */}
 
-        <h1 className="welcome-hero-title">
+        <h1 className="welcome-hero-title fade-in-up stagger-2">
           Metabolic Syndrome & Clinical Risk Intelligence
         </h1>
 
-        <p className="welcome-hero-subtitle">
+        <p className="welcome-hero-subtitle fade-in-up stagger-3">
           An evidence-based diagnostic decision-support system analyzing 11 critical clinical indicators,
           Body Roundness Index (BRI) geometry, and lipid hemodynamics using native gradient-boosted decision trees.
         </p>
 
-        <div className="welcome-hero-actions">
+        <div className="welcome-hero-actions fade-in-up stagger-4">
           <button
             type="button"
             className="shadcn-btn shadcn-btn-primary"
@@ -291,26 +291,7 @@ export default function WelcomePage({ onNavigate, onSelectPreset, presets = [] }
         </div>
       </section>
 
-      {/* 5. Dataset & Academic Context */}
-      {/* <section className="welcome-section academic-section">
-        <div className="academic-card">
-          <div className="academic-header">
-            <Database className="academic-icon text-cyan" />
-            <div>
-              <h3>NHANES Epidemiological Foundation & PBL Research Scope</h3>
-              <p>National Health and Nutrition Examination Survey (NCHS CDC, 2021–2023)</p>
-            </div>
-          </div>
-          <div className="academic-body">
-            <p>
-              This decision-support application was developed as an academic Bachelor of Technology (B.Tech) Project-Based Learning (PBL) research prototype. Training was conducted on rigorously merged laboratory examination datasets linked via unique participant sequences (<code>SEQN</code>).
-            </p>
-            <p className="academic-disclaimer">
-              <strong>Clinical Advisory:</strong> This tool is engineered strictly for research and educational purposes to demonstrate statistical pattern recognition and feature sensitivity in cardiometabolic profiling. It must not be deployed as an autonomous diagnostic agent or replacement for licensed clinical consultation.
-            </p>
-          </div>
-        </div>
-      </section> */}
+
 
       {/* 6. Call To Action Footer Banner */}
       <section className="welcome-cta-banner">
